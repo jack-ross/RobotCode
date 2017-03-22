@@ -1,9 +1,14 @@
 import RPi.GPIO as GPIO
 import time # to use delays use time.sleep(0.25)
 
+# ----- PI PIN OUT ----
 # refer to https://learn.sparkfun.com/tutorials/raspberry-gpio
 # for board layout.
 # Using BCM (Broadcom Chip) Pin marking
+
+# ----- MOTOR CONTROLER PIN OUT ----
+# https://www.pololu.com/product/1213
+
 
 # BCM prevents us from addressing Pins we can't use
 GPIO.setmode(GPIO.BCM)

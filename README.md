@@ -14,3 +14,11 @@ run `pip install -r requirements.txt`
 
 After adding a package run
 `pip freeze > requirements.txt`
+
+
+# PI PIN OUT  
+refer to `https://learn.sparkfun.com/tutorials/raspberry-gpio` for board layout.  
+Using BCM (Broadcom Chip) Pin marking
+
+# MOTOR CONTROLER PIN OUT  
+`https://www.pololu.com/product/1213`

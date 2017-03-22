@@ -10,11 +10,11 @@ GPIO.setmode(GPIO.BCM)
 
 #M1IN2
 GPIO.setup(18, GPIO.OUT)
-GPIO.output(18, GPIO.HIGH)
+GPIO.output(18, GPIO.LOW)
 
 # M1D1
 GPIO.setup(23, GPIO.OUT)
-GPIO.output(23, GPIO.HIGH)
+GPIO.output(23, GPIO.LOW)
 
 # NOTM1D2
 GPIO.setup(24, GPIO.OUT)

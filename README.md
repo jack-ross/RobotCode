@@ -22,3 +22,10 @@ Using BCM (Broadcom Chip) Pin marking
 
 # MOTOR CONTROLER PIN OUT  
 `https://www.pololu.com/product/1213`
+
+
+# Run Code on PI  
+0) `cd Capstone`
+1) `git pull`  
+2) activate environment `source capstone_env/bin/activate`  
+3) `python src/<yourfile.py>`

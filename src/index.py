@@ -34,7 +34,6 @@ GPIO.output(24, GPIO.HIGH)
 GPIO.setup(25, GPIO.OUT)
 GPIO.output(25, GPIO.HIGH)
 
-
 #M2D1
 GPIO.setup(12, GPIO.OUT)
 GPIO.output(12, GPIO.LOW)
@@ -57,4 +56,4 @@ GPIO.output(21, GPIO.HIGH)
 pwm = GPIO.PWM(18, 500)
 pwm.start(1)
 time.sleep(2)
-GPIO.cleanup()
+GPIO.cleanup()  

@@ -13,9 +13,14 @@ import time # to use delays use time.sleep(0.25)
 # BCM prevents us from addressing Pins we can't use
 GPIO.setmode(GPIO.BCM)
 
+
+# M1IN1
+GPIO.setup(26, GPIO.OUT)
+GPIO.output(26, GPIO.LOW)
+
 #M1IN2
 GPIO.setup(18, GPIO.OUT)
-GPIO.output(18, GPIO.LOW)
+GPIO.output(18, GPIO.HIGH)
 
 # M1D1
 GPIO.setup(23, GPIO.OUT)
@@ -29,8 +34,27 @@ GPIO.output(24, GPIO.HIGH)
 GPIO.setup(25, GPIO.OUT)
 GPIO.output(25, GPIO.HIGH)
 
-# PWM pin up with a frequency of 1kHz, 
-# and set that output to a 50% duty cycle.
-pwm = GPIO.PWM(18, 1000)
-pwm.start(50)
 
+#M2D1
+GPIO.setup(12, GPIO.OUT)
+GPIO.output(12, GPIO.LOW)
+
+#M2barD2
+GPIO.setup(16, GPIO.OUT)
+GPIO.output(16, GPIO.HIGH)
+
+# M2IN1
+GPIO.setup(20, GPIO.OUT)
+GPIO.output(20, GPIO.LOW)
+
+# M2IN2
+GPIO.setup(21, GPIO.OUT)
+GPIO.output(21, GPIO.HIGH)
+
+
+# PWM pin up with a frequency of 1kHz,
+# and set that output to a 50% duty cycle.
+pwm = GPIO.PWM(18, 500)
+pwm.start(1)
+time.sleep(2)
+GPIO.cleanup()

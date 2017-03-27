@@ -13,14 +13,19 @@ import time # to use delays use time.sleep(0.25)
 # BCM prevents us from addressing Pins we can't use
 GPIO.setmode(GPIO.BCM)
 
+#Enable
+GPIO.setup(25, GPIO.OUT)
+GPIO.output(25, GPIO.HIGH)
+
+##### Motor 1
 
 # M1IN1
 GPIO.setup(26, GPIO.OUT)
-GPIO.output(26, GPIO.LOW)
+GPIO.output(26, GPIO.HIGH)
 
 #M1IN2
 GPIO.setup(18, GPIO.OUT)
-GPIO.output(18, GPIO.HIGH)
+GPIO.output(18, GPIO.LOW)
 
 # M1D1
 GPIO.setup(23, GPIO.OUT)
@@ -30,9 +35,7 @@ GPIO.output(23, GPIO.LOW)
 GPIO.setup(24, GPIO.OUT)
 GPIO.output(24, GPIO.HIGH)
 
-#Enable
-GPIO.setup(25, GPIO.OUT)
-GPIO.output(25, GPIO.HIGH)
+##### Motor 2
 
 #M2D1
 GPIO.setup(12, GPIO.OUT)

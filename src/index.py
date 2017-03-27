@@ -31,6 +31,7 @@ GPIO.output(25, GPIO.HIGH)
 
 # PWM pin up with a frequency of 1kHz, 
 # and set that output to a 50% duty cycle.
-pwm = GPIO.PWM(18, 1000)
-pwm.start(50)
-
+pwm = GPIO.PWM(18, 500)
+pwm.start(1)
+time.sleep(2)
+GPIO.cleanup()  

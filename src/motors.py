@@ -58,5 +58,5 @@ GPIO.output(21, GPIO.HIGH)
 # and set that output to a 50% duty cycle.
 pwm = GPIO.PWM(18, 500)
 pwm.start(90)
-time.sleep(3)
+time.sleep(2.5)
 GPIO.cleanup()  

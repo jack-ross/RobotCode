@@ -1,0 +1,6 @@
+Notes
+
+#Reading encoders: 
+The encoder value for ~1 rotation on right wheel is consistently around 1960. Left wheel is about 1950.
+Could use some further testing.
+This is about half of the  3591.84 counts per revolution that the spec mentions in the data sheet.  This could make sense, as we only count up for one encoder.

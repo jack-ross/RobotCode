@@ -1,5 +1,4 @@
 from RPi import GPIO
-from time import sleep
 
 clk = 19
 dt = 13
@@ -23,7 +22,6 @@ try:
                         else:
                                 counter += 1
                         print counter
-	
                 clkLastState = clkState
                 #sleep(0.0001)
 finally:

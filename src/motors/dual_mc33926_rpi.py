@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 
 # Motor speeds for this library are specified as numbers
 # between -MAX_SPEED and MAX_SPEED, inclusive.
-_max_speed = 480  # 19.2 MHz / 2 / 480 = 20 kHz
+_max_speed = 100  # 19.2 MHz / 2 / 480 = 20 kHz
 MAX_SPEED = _max_speed
 
 io_initialized = False
@@ -41,7 +41,7 @@ class Motor(object):
 
     def __init__(self, pwm_pin, dir_pin):
         self.dir_pin = dir_pin
-        self.pwm_pin = GPIO.PWM(pwm_pin, 20000)  # frequency=20kHz
+        self.pwm_pin = GPIO.PWM(pwm_pin, 500)  # frequency=20kHz
 
     # speed between -100 and 100
     def setSpeed(self, speed):
@@ -64,9 +64,9 @@ class Motors(object):
     def __init__(self):
         #  pwm_pin(in2), dir_pin(in1)
         io_init()
-        self.motor1 = Motor(1, 25)
-        self.motor2 = Motor(29, 28)
-        self.enable_pin = 6
+        self.motor1 = Motor(18, 26)
+        self.motor2 = Motor(21, 20)
+        self.enable_pin = 25
 
     def enable(self):
         io_init()

@@ -64,9 +64,9 @@ class Motors(object):
     def __init__(self):
         #  pwm_pin(in2), dir_pin(in1)
         io_init()
-        self.motor1 = Motor(18, 26)
-        self.motor2 = Motor(21, 20)
-        self.enable_pin = 25
+        self.motor1 = Motor(1, 25)
+        self.motor2 = Motor(29, 28)
+        self.enable_pin = 6
 
     def enable(self):
         io_init()

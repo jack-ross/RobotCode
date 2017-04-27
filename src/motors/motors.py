@@ -1,67 +1,40 @@
-import RPi.GPIO as GPIO
-import time # to use delays use time.sleep(0.25)
+from __future__ import print_function
+import time
+from dual_mc33926_rpi import motors, MAX_SPEED
 
-# ----- PI PIN OUT ----
-# refer to https://learn.sparkfun.com/tutorials/raspberry-gpio
-# for board layout.
-# Using BCM (Broadcom Chip) Pin marking
+# Set up sequences of motor speeds.
+test_forward_speeds = list(range(0, MAX_SPEED, 1)) + \
+  [MAX_SPEED] * 200 + list(range(MAX_SPEED, 0, -1)) + [0]  
 
-# ----- MOTOR CONTROLER PIN OUT ----
-# https://www.pololu.com/product/1213
+test_reverse_speeds = list(range(0, -MAX_SPEED, -1)) + \
+  [-MAX_SPEED] * 200 + list(range(-MAX_SPEED, 0, 1)) + [0]  
 
+try:
+    motors.enable()
+    motors.setSpeeds(0, 0)
 
-# BCM prevents us from addressing Pins we can't use
-GPIO.setmode(GPIO.BCM)
+    print("Motor 1 forward")
+    for s in test_forward_speeds:
+        motors.motor1.setSpeed(s)
+        time.sleep(0.005)
 
+    print("Motor 1 reverse")
+    for s in test_reverse_speeds:
+        motors.motor1.setSpeed(s)
+        time.sleep(0.005)
 
-def initMotors():
-    #Enable
-    enable = GPIO.setup(25, GPIO.OUT)
-    GPIO.output(25, GPIO.HIGH)
+    print("Motor 2 forward")
+    for s in test_forward_speeds:
+        motors.motor2.setSpeed(s)
+        time.sleep(0.005)
 
+    print("Motor 2 reverse")
+    for s in test_reverse_speeds:
+        motors.motor2.setSpeed(s)
+        time.sleep(0.005)
 
-    ## defaults 
-        # M1D1
-    m1d1 = GPIO.setup(23, GPIO.OUT)
-    GPIO.output(23, GPIO.LOW)
-        #M2D1
-    GPIO.setup(12, GPIO.OUT)
-    GPIO.output(12, GPIO.LOW)
-        # M1nD2
-    GPIO.setup(24, GPIO.OUT)
-    GPIO.output(24, GPIO.HIGH)
-        #M2barD2
-    GPIO.setup(16, GPIO.OUT)
-    GPIO.output(16, GPIO.HIGH)
-
-    ##### Motor 1
-
-    m1in1 = GPIO.setup(26, GPIO.OUT)
-    GPIO.output(26, GPIO.HIGH) # low to reverse dir
-
-    #M1IN2
-    m1in2 = GPIO.setup(18, GPIO.OUT)
-    GPIO.output(18, GPIO.LOW)
-
-
-    ##### Motor 2
-
-    # M2IN1
-    GPIO.setup(20, GPIO.OUT)
-    GPIO.output(20, GPIO.LOW)
-
-    # M2IN2
-    GPIO.setup(21, GPIO.OUT)
-    GPIO.output(21, GPIO.HIGH)
-
-    ## slew is on 6 (BCM)
-
-
-# PWM pin up with a frequency of 1kHz,
-# and set that output to a 50% duty cycle.
-
-initMotors()
-pwm = GPIO.PWM(18, 500)
-pwm.start(50) # 99 is slow 1 is fast
-time.sleep(2.5)
-GPIO.cleanup()  
+finally:
+  # Stop the motors, even if there is an exception
+  # or the user presses Ctrl+C to kill the process.
+  motors.setSpeeds(0, 0)
+  motors.disable()

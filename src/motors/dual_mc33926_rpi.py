@@ -1,4 +1,5 @@
-import wiringpi
+import time
+import RPi.GPIO as GPIO
 
 # Motor speeds for this library are specified as numbers
 # between -MAX_SPEED and MAX_SPEED, inclusive.
@@ -11,28 +12,27 @@ def io_init():
     if io_initialized:
         return
 
-    wiringpi.wiringPiSetupGpio()
-    wiringpi.pinMode(18, wiringpi.GPIO.PWM_OUTPUT)
-    wiringpi.pinMode(21, wiringpi.GPIO.PWM_OUTPUT)
+    GPIO.setmode(GPIO.BCM)
 
-    wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
-    wiringpi.pwmSetRange(MAX_SPEED)
-    wiringpi.pwmSetClock(2)
+    # PWM pins
+    GPIO.setup(18, GPIO.OUT)
+    GPIO.setup(21, GPIO.OUT)
 
-    wiringpi.pinMode(20, wiringpi.GPIO.OUTPUT)
-    wiringpi.pinMode(25, wiringpi.GPIO.OUTPUT)
-    wiringpi.pinMode(26, wiringpi.GPIO.OUTPUT)
+    # direction and enables
+    GPIO.setup(20, GPIO.OUT)
+    GPIO.setup(25, GPIO.OUT)
+    GPIO.setup(26, GPIO.OUT)
 
     # defaults based on page 17 of 
     # https://www.pololu.com/file/download/MC33926.pdf?file_id=0J233
-    wiringpi.pinMode(12, wiringpi.GPIO.OUTPUT)
-    wiringpi.pinMode(16, wiringpi.GPIO.OUTPUT)
-    wiringpi.pinMode(23, wiringpi.GPIO.OUTPUT)
-    wiringpi.pinMode(24, wiringpi.GPIO.OUTPUT)
-    wiringpi.digitalWrite(12, 0) # M2D1
-    wiringpi.digitalWrite(16, 1) # M2nD2
-    wiringpi.digitalWrite(23, 0) # M1D1
-    wiringpi.digitalWrite(24, 1) # M1nD2
+    GPIO.setup(12, GPIO.OUT)
+    GPIO.setup(16, GPIO.OUT)
+    GPIO.setup(23, GPIO.OUT)
+    GPIO.setup(24, GPIO.OUT)
+    GPIO.output(12, GPIO.LOW) # M2D1
+    GPIO.output(16, GPIO.HIGH) # M2nD2
+    GPIO.output(23, GPIO.LOW) # M1D1
+    GPIO.output(24, GPIO.HIGH) # M1nD2
 
     io_initialized = True
 
@@ -40,9 +40,10 @@ class Motor(object):
     MAX_SPEED = _max_speed
 
     def __init__(self, pwm_pin, dir_pin):
-        self.pwm_pin = pwm_pin
         self.dir_pin = dir_pin
+        self.pwm_pin = GPIO.PWM(pwm_pin, 20000)  # frequency=20kHz
 
+    # speed between -100 and 100
     def setSpeed(self, speed):
         if speed < 0:
             speed = -speed
@@ -54,8 +55,8 @@ class Motor(object):
             speed = MAX_SPEED
 
         io_init()
-        wiringpi.digitalWrite(self.dir_pin, dir_value)
-        wiringpi.pwmWrite(self.pwm_pin, speed)
+        GPIO.output(self.dir_pin, dir_value)
+        self.pwm_pin.ChangeDutyCycle(speed)
 
 class Motors(object):
     MAX_SPEED = _max_speed
@@ -69,11 +70,11 @@ class Motors(object):
 
     def enable(self):
         io_init()
-        wiringpi.digitalWrite(self.enable_pin, 1)
+        GPIO.output(self.enable_pin, 1)
 
     def disable(self):
         io_init()
-        wiringpi.digitalWrite(self.enable_pin, 0)
+        GPIO.output(self.enable_pin, 0)
 
     def setSpeeds(self, m1_speed, m2_speed):
         self.motor1.setSpeed(m1_speed)

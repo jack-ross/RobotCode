@@ -11,6 +11,7 @@ test_reverse_speeds = list(range(0, -MAX_SPEED, -1)) + \
 
 try:
     motors.enable()
+    time.sleep(2)
     motors.setSpeeds(0, 0)
 
     print("Motor 1 forward")

@@ -42,6 +42,7 @@ class Motor(object):
     def __init__(self, pwm_pin, dir_pin):
         self.dir_pin = dir_pin
         self.pwm_pin = GPIO.PWM(pwm_pin, 500)  # frequency=20kHz
+        self.pwm_pin.start(75)
 
     # speed between -100 and 100
     def setSpeed(self, speed):

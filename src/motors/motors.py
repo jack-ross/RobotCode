@@ -11,10 +11,10 @@ import time # to use delays use time.sleep(0.25)
 
 
 # BCM prevents us from addressing Pins we can't use
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 
 
-def initMotors(count):
+def initMotors():
     #Enable
     enable = GPIO.setup(25, GPIO.OUT)
     GPIO.output(25, GPIO.HIGH)
@@ -37,7 +37,7 @@ def initMotors(count):
     ##### Motor 1
 
     m1in1 = GPIO.setup(26, GPIO.OUT)
-    GPIO.output(26, GPIO.HIGH)
+    GPIO.output(26, GPIO.HIGH) # low to reverse dir
 
     #M1IN2
     m1in2 = GPIO.setup(18, GPIO.OUT)
@@ -59,6 +59,8 @@ def initMotors(count):
 
 # PWM pin up with a frequency of 1kHz,
 # and set that output to a 50% duty cycle.
+
+initMotors()
 pwm = GPIO.PWM(18, 500)
 pwm.start(50) # 99 is slow 1 is fast
 time.sleep(2.5)

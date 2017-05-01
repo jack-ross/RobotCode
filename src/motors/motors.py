@@ -11,28 +11,28 @@ test_reverse_speeds = list(range(0, -MAX_SPEED, -1)) + \
 
 try:
     motors.enable()
-    time.sleep(2)
-    motors.setSpeeds(0, 0)
+    motors.setSpeeds(100, 100)
 
     print("Motor 1 forward")
     # for s in test_forward_speeds:
-    motors.motor1.setSpeed(25)
-    time.sleep(1.005)
+    for dc in range(-100, 101, 5):
+        motors.setSpeeds(dc,dc)
+        time.sleep(0.5)
 
     print("Motor 1 reverse")
     # for s in test_reverse_speeds:
-    motors.motor1.setSpeed(-25)
-    time.sleep(1.005)
+#    motors.motor1.setSpeed(-25)
+ #   time.sleep(1.005)
 
     print("Motor 2 forward")
     # for s in test_forward_speeds:
-    motors.motor2.setSpeed(25)
-    time.sleep(1.005)
+#    motors.motor2.setSpeed(25)
+#    time.sleep(1.005)
 
     print("Motor 2 reverse")
     # for s in test_reverse_speeds:
-    motors.motor2.setSpeed(-25)
-    time.sleep(1.005)
+#    motors.motor2.setSpeed(-25)
+#    time.sleep(1.005)
 
 finally:
   # Stop the motors, even if there is an exception

@@ -51,6 +51,7 @@ class Motor(object):
             dir_value = 0
         else:
             dir_value = 1
+            speed = 100 - speed
 
         if speed > MAX_SPEED:
             speed = MAX_SPEED

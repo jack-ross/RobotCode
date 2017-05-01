@@ -12,19 +12,20 @@ logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] (%(threadName)-10s) %(message)s',
                     )
 
+#Has to be a dict b/c they are mutable
+encoderCount = {"leftEncoder":0, "rightEncoder":0}
+
 def init_Motors():
     motors.enable()
     time.sleep(2)
     motors.setSpeeds(0, 0)
 
 def init_Encoders():
-
-#Has to be a dict b/c they are mutable
-encoderCount = {"leftEncoder":0, "rightEncoder":0}
+    encoderControl.initPins(19,13)
 
 def readEncoder(count):
     logging.debug('Starting Encoder Thread')
-    encoderControl.initPins(19,13)
+    #Update the encoder dictionary constantly
     encoderControl.readRotors(encoderCount)
     logging.debug(encoderCount)
 
@@ -40,15 +41,17 @@ def mqttControl():
     #MQTT Polling
     logging.debug('Exiting')
 
-def 
-init_Motors()
+def init_Robot():
+    init_Motors()
+    init_Encoders()
+    init_Mqtt()
 
 encoderThread = threading.Thread(name='encodersThread', target=readEncoder, args=(count,))
 motorThread = threading.Thread(name='motorsThread', target=motorControl)
-mqttThread = threading.Thread(name='mqttThread', target=mqttControl)
+#mqttThread = threading.Thread(name='mqttThread', target=mqttControl)
 
 encoderThread.start()
-motorThread.start()
+#motorThread.start()
 
 #will this need locks? Encoders writes and the other one reads?
 #

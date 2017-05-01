@@ -16,8 +16,9 @@ try:
 
     print("Motor 1 forward")
     # for s in test_forward_speeds:
-    motors.motor1.setSpeed(25)
-    time.sleep(1.005)
+    for dc in range(-100, 101, 5):
+        motors.motor1.setSpeed(dc)
+        time.sleep(0.5)
 
     print("Motor 1 reverse")
     # for s in test_reverse_speeds:

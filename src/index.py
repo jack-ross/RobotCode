@@ -18,7 +18,7 @@ encoderCount = {"leftEncoder":0, "rightEncoder":0}
 def init_Motors():
     motors.enable()
     time.sleep(2)
-    motors.setSpeeds(0, 0)
+    motors.setSpeeds(50, 50)
 
 def init_Encoders():
     encoderControl.initPins(19,13)
@@ -33,6 +33,8 @@ def motorControl():
     logging.debug('Starting Motor Thread')
     logging.debug('Starting')
     #PID control
+    time.sleep(2)
+    motors.setSpeeds(0,0)
     logging.debug('Exiting')
 
 def mqttControl():
@@ -44,17 +46,17 @@ def mqttControl():
 def init_Robot():
     init_Motors()
     init_Encoders()
-    init_Mqtt()
+    #init_Mqtt()
 
-encoderThread = threading.Thread(name='encodersThread', target=readEncoder, args=(count,))
+encoderThread = threading.Thread(name='encodersThread', target=readEncoder, args=(encoderCount))
 motorThread = threading.Thread(name='motorsThread', target=motorControl)
 #mqttThread = threading.Thread(name='mqttThread', target=mqttControl)
 
-encoderThread.start()
+#encoderThread.start()
 #motorThread.start()
 
 #will this need locks? Encoders writes and the other one reads?
 #
 while True:
-	print count
+	print encoderCount
 	time.sleep(2)

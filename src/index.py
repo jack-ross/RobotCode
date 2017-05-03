@@ -122,31 +122,57 @@ def move():
 
         totalTicks = encoderCount['leftEncoder']
 
+def turn(degrees):
+    logging.debug("Ticks to turn: " + str(degrees))
+    motors.setSpeeds(0,0)
+    #maybe delay?
+    #sleep(0.05)
+    ticksToTurn = abs(degrees) * TICKS_PER_DEG_TURN;
 
-encoderThread.start()
-motorThread.start()
+    if(degrees > 0):
+        motors.setSpeeds(standard_speed, -1*standard_speed)
+    else:
+        motors.setSpeeds(standard_speed, -1*standard_speed)
 
-#will this need locks? Encoders writes and the other one reads?
+    leftDone = False
+    rightDone = False;
+
+    while (!leftDone || !rightDone):
+        if(encoderCount['leftEncoder'] > ticksToTurn):
+            motors.motor1.setSpeed(0)
+            leftDone = True
+        if(encoderCount['rightEncoder'] > ticksToTurn):
+            motors.motor2.setSpeed(0)
+            rightDone = True
+
+'''
+--------------------------Main----------------------------
+''' 
+
+#will this need locks? Don't this so
+#Encoders writes to the dict. 
 #MQTT writes to its own info
-#
+#This thread just reads their info...
 
 '''TODO:
--Wheel calculation stuff (can put that in the encoders lib)
--pid
+-Confirm Wheel calculation stuff (can put that in the encoders lib)
+  -pid
 '''
 
-'''
-----------------------Robot Control Methods----------------------------
-''' 
-while True:
-    #if the distance to goal is > 5 cm we will wait for the next goal
-    if(abs(mqttClient.angleToGoal) > 30):
-        turn(mqttClient.angleToGoal); 
-        #we want some time for the system to send us more data
-        #sleep(.1)
-    
-    else if(mqttClient.distanceToGoal > 5)
-        move();
+if __name__ == "__main__":
+    encoderThread.start()
+    motorThread.start()
+    mqttThread.start()
+
+    while True:
+        #if the distance to goal is > 5 cm we will wait for the next goal
+        if(abs(mqttClient.angleToGoal) > 30):
+            turn(mqttClient.angleToGoal); 
+            #we want some time for the system to send us more data
+            #sleep(.1)
+        
+        else if(mqttClient.distanceToGoal > 5)
+            move();
  
 
 

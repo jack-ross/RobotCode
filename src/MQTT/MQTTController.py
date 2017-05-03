@@ -10,19 +10,17 @@ robot_topic_name = "robot-1"
 #Intialize to -1 so always reset
 lastMsgRecvTime = -1
 
-class MQTTClient:
+class MQTTClient(object):
 	def __init__(self, robot_name, robot_topic_name):
 		self.robot_name = robot_name
 		self.robot_topic_name = robot_topic_name
 		self.distanceToGoal = 0
 		self.angleToGoal = 0
-		self.permissionToMove = false
+		self.permissionToMove = False
 		init_Mqtt()
 
 	def on_connect(self, client, userdata, flags, rc):
-	    global loop_flag
 	    logging.debug("Robot 1 connected")
-	    loop_flag=0
 
 	def on_message(self, client, userdata, msg):
 	    logging.debug(str(msg.payload))
@@ -49,6 +47,7 @@ class MQTTClient:
 	def run_Mqtt(self):
 		self.mqttc.subscribe(self.robot_topic_name, 0)
 	    self.mqttc.loop_forever()
+	    #TODO: Change this to loop(2)
 
 ''' Old MQTT code 
 	//we have recieved the msot recent msg from the server

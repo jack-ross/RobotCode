@@ -1,6 +1,6 @@
 import time
 import RPi.GPIO as GPIO
-
+import logging 
 # Motor speeds for this library are specified as numbers
 # between -MAX_SPEED and MAX_SPEED, inclusive.
 _max_speed = 100  # 19.2 MHz / 2 / 480 = 20 kHz
@@ -10,6 +10,7 @@ io_initialized = False
 def io_init():
     global io_initialized
     if io_initialized:
+        logging.error("Global io_initialized var was true")
         return
 
     GPIO.setmode(GPIO.BCM)

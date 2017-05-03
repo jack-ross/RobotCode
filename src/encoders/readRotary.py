@@ -2,7 +2,7 @@ from RPi import GPIO
 
 encoderAL = 19
 encoderBL = 13
-encLA_last_state = -1
+encLA_last = -1
 count = 0
 
 # TODO: Add init for other encoder and pins
@@ -23,12 +23,12 @@ def initPins(encoderALPin, encoderBLPin):
 
 def readRotors(countDict):
     try:
-
+        encLA_last = -1
         while True:
             encLA_state = GPIO.input(encoderAL)
             # test and uncomment this
             # encLB_state = GPIO.input(dt)
-            if encLA_state != encLA_last_state:
+            if encLA_state != encLA_last:
                 encLB_state = GPIO.input(encoderBL)
                 if encLB_state != encLA_state:
                     countDict["leftEncoder"] += 1

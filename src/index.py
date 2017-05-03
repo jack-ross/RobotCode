@@ -2,19 +2,29 @@ import logging
 import threading
 #from multiprocessing import Pool
 import time
-import test
 
-import readRotary as encoderControl
+import mockMotors as mock
 
-from motors.dual_mc33926_rpi import motors, MAX_SPEED
- 
+#Imports from other classes
+#import readRotary as encoderControl
+#from motors.dual_mc33926_rpi import motors, MAX_SPEED
+#from MQTT.MQTTController import MQTTClient
+
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] (%(threadName)-10s) %(message)s',
                     )
 
 #Has to be a dict b/c they are mutable
 encoderCount = {"leftEncoder":0, "rightEncoder":0}
+standard_speed = 50
+robot_name = "Robo 1"
+robot_topic_name = "robot-1"
 
+mqttClient = MQTTClient(robot_name, robot_topic_name)
+
+'''
+----------------------Intialize Componentes----------------------------
+'''
 def init_Motors():
     motors.enable()
     time.sleep(2)
@@ -23,18 +33,35 @@ def init_Motors():
 def init_Encoders():
     encoderControl.initPins(19,13)
 
-def readEncoder(count):
+def init_Sonar():
+    GPIO.setup(sonarPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+def init_MQTT():
+    mqttClient.run_MQtt()
+
+def init_Robot():
+    init_Motors()
+    init_Encoders()
+    init_Sonar()
+    init_Mqtt()
+
+'''
+----------------------Thread Methods----------------------------
+'''    
+def readEncoder(s, count):
     logging.debug('Starting Encoder Thread')
     #Update the encoder dictionary constantly
-    encoderControl.readRotors(encoderCount)
+    #encoderControl.readRotors(encoderCount)
     logging.debug(encoderCount)
 
-def motorControl():
+def motorControl(s, eCount):
     logging.debug('Starting Motor Thread')
     logging.debug('Starting')
     #PID control
-    time.sleep(2)
-    motors.setSpeeds(0,0)
+    #time.sleep(2)
+    #motors.setSpeeds(0,0)
+    mock.incrementLeft(eCount)
+    mock.incrementRight(eCount)
     logging.debug('Exiting')
 
 def mqttControl():
@@ -43,20 +70,87 @@ def mqttControl():
     #MQTT Polling
     logging.debug('Exiting')
 
-def init_Robot():
-    init_Motors()
-    init_Encoders()
-    #init_Mqtt()
+encoderThread = threading.Thread(name='encodersThread', target=readEncoder, args=(encoderCount,))
+motorThread = threading.Thread(name='motorsThread', target=motorControl, args=(encoderCount,))
+mqttThread = threading.Thread(name='mqttThread', target=mqttControl)
 
-encoderThread = threading.Thread(name='encodersThread', target=readEncoder, args=(encoderCount))
-motorThread = threading.Thread(name='motorsThread', target=motorControl)
-#mqttThread = threading.Thread(name='mqttThread', target=mqttControl)
+'''
+----------------------Robot Control Methods----------------------------
+''' 
 
-#encoderThread.start()
-#motorThread.start()
+
+#Return true if there is an object in the way
+def detectObject():
+    if(GPIO.input(sonarPin) == 1):
+        return True
+    return False
+
+def move():
+    totalTicks = 0;
+    ticksToMove = mqttClient.distanceToGoal * TI_PER_CM;
+    motors.setSpeeds(standard_speed, standard_speed)
+
+    while (totalTicks < ticksToMove):
+        #angle threshold
+        if(abs(mqttClient.angleToGoal) > 30):
+            break;
+
+        while(detectObject() == True or mqttClient.permissionToMove == False):
+            motors.setSpeeds(0,0)
+        
+        #Pid stuff
+        extra_ticks = abs(1.2*mqttClient.angleToGoal) * TICKS_PER_DEG_TURN; // normally no multiplier on the angle
+        turn_velocity = (extra_ticks + SPEED_TICKS) / SPEED_TICKS * standard_speed;
+
+        ''' Why did we have this?
+        if (abs(ticksRcheck - ticksLcheck) == (int)EXTRA_TICKS) {
+        angleToGoal = 0;
+        ticksRcheck = 0;
+        ticksLcheck = 0;
+        }'''
+
+        if(mqttClient.angleToGoal > 0.5):
+            #Steer left
+            motors.setSpeeds(standard_speed, turn_velocity)
+            #logging.debug("Motor speeds: ")
+        elif(mqttClient.angleToGoal < 0.5):
+            #Steer right
+            motors.setSpeeds(turn_velocity, standard_speed)
+        else:
+            #go straight
+            motors.setSpeeds(standard_speed, standard_speed)
+
+        totalTicks = encoderCount['leftEncoder']
+
+
+encoderThread.start()
+motorThread.start()
 
 #will this need locks? Encoders writes and the other one reads?
+#MQTT writes to its own info
 #
+
+'''TODO:
+-Wheel calculation stuff (can put that in the encoders lib)
+-pid
+'''
+
+'''
+----------------------Robot Control Methods----------------------------
+''' 
 while True:
-	print encoderCount
-	time.sleep(2)
+    #if the distance to goal is > 5 cm we will wait for the next goal
+    if(abs(mqttClient.angleToGoal) > 30):
+        turn(mqttClient.angleToGoal); 
+        #we want some time for the system to send us more data
+        #sleep(.1)
+    
+    else if(mqttClient.distanceToGoal > 5)
+        move();
+ 
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+TO DO:
+
+- update requirements.txt
+- update encoder pins
+- debug MQTT
+- Put in MQTT ACK back to server
+- Encoder ticks per revoultion of the wheel (see notes.txt for starters)
+
+- Dont have an encoder count reset yet.. we need one for turning? Maybe not (see line 152 in index.py)
+	- also see  line 46 and 47 in readRotary.py
+- overflow could be an issue

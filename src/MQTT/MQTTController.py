@@ -24,7 +24,7 @@ class MQTTClient(object):
 
 	def on_message(self, client, userdata, msg):
 	    logging.debug(str(msg.payload))
-	    '''parsed = json.loads(str(msg.payload))
+	    parsed = json.loads(str(msg.payload))
 	    x=parsed['x']
 	    y=parsed['y']
 	    curMsgRecievedTime = parsed['time']
@@ -34,7 +34,7 @@ class MQTTClient(object):
 	    	self.distanceToGoal = root["distanceToGoal"];
 		    self.angleToGoal = root["angleToGoal"];
 		    self.permissionToMove = root["permissionToMove"];
-		'''
+		
 
 	def init_Mqtt(self):
 		#------------Init MQTT connection on local host------------
@@ -46,8 +46,8 @@ class MQTTClient(object):
 	
 	def run_Mqtt(self):
 		self.mqttc.subscribe(self.robot_topic_name, 0)
-	    self.mqttc.loop_forever()
-	    #TODO: Change this to loop(2)
+		self.mqttc.loop_forever()
+		#TODO: Change this to loop(2) ? 
 
 ''' Old MQTT code 
 	//we have recieved the msot recent msg from the server

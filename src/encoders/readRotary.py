@@ -48,11 +48,12 @@ class Encoder(object):
     '''
     # count dict will hold the count for the encoder
     def readRotors(self, count, resetQ):
-        try:
+        encLA_last = -1
+	try:
             while True:
 
                 while resetQ.empty():
-                    logging.debug("Counting")
+                    #logging.debug("Counting")
                     encLA_state = GPIO.input(self.encoderA)
                     # test and uncomment this
                     # encLB_state = GPIO.input(dt)
@@ -63,7 +64,7 @@ class Encoder(object):
                 if not resetQ.empty():
                     logging.debug("reseting")
                     resetQ.get()
-                    count = 0
+                    count.value = 0
 
         finally:
             GPIO.cleanup() # this seems wrong...?
@@ -106,3 +107,4 @@ class Encoders(object):
 
 
 encoders = Encoders()
+

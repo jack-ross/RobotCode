@@ -45,28 +45,24 @@ class Encoder(object):
     '''
     # count dict will hold the count for the encoder
     def readRotors(self, count):
-        try:
-            while True:
-                encLA_last = -1
-                while self.resetEncoder.empty():
-                    encLA_state = GPIO.input(self.encoderA)
-                    # test and uncomment this
-                    # encLB_state = GPIO.input(dt)
-                    if encLA_state != encLA_last:
-                        encLB_state = GPIO.input(self.encoderB)
-                        if encLB_state != encLA_state:
-                            count.value += 1
-                        else:
-                            count.value += 1
-                            # print count["encoderA"]
-                        encLA_last_state = encLA_state
-                        # sleep(0.0001)
-                if not self.resetEncoder.empty():
-                    self.resetEncoder.get()
-                    count = 0
-
-        finally:
-            GPIO.cleanup() # this seems wrong...?
+        while True:
+            encLA_last = -1
+            while self.resetEncoder.empty():
+                encLA_state = GPIO.input(self.encoderA)
+                # test and uncomment this
+                # encLB_state = GPIO.input(dt)
+                if encLA_state != encLA_last:
+                    encLB_state = GPIO.input(self.encoderB)
+                    if encLB_state != encLA_state:
+                        count.value += 1
+                    else:
+                        count.value += 1
+                        # print count["encoderA"]
+                    encLA_last_state = encLA_state
+                    # sleep(0.0001)
+            if not self.resetEncoder.empty():
+                self.resetEncoder.get()
+                count = 0
 
 class Encoders(object):
 
@@ -76,9 +72,9 @@ class Encoders(object):
 
         self.leftEncoder = Encoder(encoderLeftPinA, encoderLeftPinB, "leftEncoder")
         self.rightEncoder = Encoder(encoderRightPinA, encoderRightPinB, "rightEncoder")
-        self.start()
 
     def start(self):
+        logging.debug("starting encoders")
         encoderProcessLeft = Process(name="leftEncoder",
                                      target=self.leftEncoder.readRotors,
                                      args=(self.encoderCountLeft, ))

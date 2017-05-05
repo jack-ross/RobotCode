@@ -4,6 +4,11 @@ import threading
 import time
 from multiprocessing import Queue, Process, Value, Array
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='[%(levelname)s] (%(threadName)-10s) %(message)s',
+                    )
+
+
 #note these values worked for left encoder
 encoderAL = 19
 encoderBL = 13
@@ -30,8 +35,6 @@ class Encoder(object):
         GPIO.setup(self.encoderA, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.encoderB, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-        encLA_last_state = GPIO.input(self.encoderA)
-
     def testWhile(self, count):
         time.sleep(1)
         print type(count)
@@ -47,21 +50,18 @@ class Encoder(object):
     def readRotors(self, count, resetQ):
         try:
             while True:
-                encLA_last = -1
+
                 while resetQ.empty():
+                    logging.debug("Counting")
                     encLA_state = GPIO.input(self.encoderA)
                     # test and uncomment this
                     # encLB_state = GPIO.input(dt)
                     if encLA_state != encLA_last:
-                        encLB_state = GPIO.input(self.encoderB)
-                        if encLB_state != encLA_state:
-                            count.value += 1
-                        else:
-                            count.value += 1
+                        count.value += 1
                             # print count["encoderA"]
-                        encLA_last_state = encLA_state
-                        # sleep(0.0001)
+                        encLA_last = encLA_state
                 if not resetQ.empty():
+                    logging.debug("reseting")
                     resetQ.get()
                     count = 0
 

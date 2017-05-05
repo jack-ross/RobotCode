@@ -16,10 +16,10 @@ encLA_last = -1
 count = 0
 
 # TODO: Get proper pins
-encoderRightPinA = -1
-encoderRightPinB = -1
-encoderLeftPinA = -1
-encoderLeftPinB = -1
+encoderRightPinA = 4
+encoderRightPinB = 17
+encoderLeftPinA = 19
+encoderLeftPinB = 13
 
 class Encoder(object):
     def __init__(self, encoderAPin, encoderBPin, name):

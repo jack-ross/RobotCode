@@ -101,11 +101,14 @@ def move():
     motors.setSpeeds(standard_speed, standard_speed)
 
     while (totalTicks < ticksToMove):
+        logging.debug("inside totalticks/tickstomove")
         #angle threshold
         if(abs(angleToGoal) > 30):
+            logging.debug("angle greater than zero")    
             break
 
         while(detectObject() == True or permissionToMove == False):
+            logging.debug("blocked")            
             motors.setSpeeds(0,0)
         
         # adjust speed of one side if robot is getting off track
@@ -166,13 +169,10 @@ def turn(degrees):
 if __name__ == "__main__":
 
     mqttThread.start()
-    logging.debug("after mqtt")
 
     distanceToGoal = 10
 
     try:
-        logging.debug("inside try")
-        
         while True:
             
             #if the distance to goal is > 5 cm we will wait for the next goal

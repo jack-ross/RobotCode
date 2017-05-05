@@ -53,9 +53,10 @@ def init_Motors():
     time.sleep(2)
     motors.setSpeeds(50, 50)
 
-def init_Encoders():
-    leftEncoder.initPins()
-    rightEncoder.initPins()
+# Init pints is in the constructor
+#def init_Encoders():
+#     leftEncoder.initPins()
+#     rightEncoder.initPins()
 
 def init_Sonar():
     GPIO.setup(sonarPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)

@@ -44,11 +44,11 @@ class Encoder(object):
     DEPRECATED?
     '''
     # count dict will hold the count for the encoder
-    def readRotors(self, count):
+    def readRotors(self, count, resetQ):
         try:
             while True:
                 encLA_last = -1
-                while self.resetEncoder.empty():
+                while resetQ.empty():
                     encLA_state = GPIO.input(self.encoderA)
                     # test and uncomment this
                     # encLB_state = GPIO.input(dt)
@@ -61,8 +61,8 @@ class Encoder(object):
                             # print count["encoderA"]
                         encLA_last_state = encLA_state
                         # sleep(0.0001)
-                if not self.resetEncoder.empty():
-                    self.resetEncoder.get()
+                if not resetQ.empty():
+                    resetQ.get()
                     count = 0
 
         finally:
@@ -76,22 +76,26 @@ class Encoders(object):
 
         self.leftEncoder = Encoder(encoderLeftPinA, encoderLeftPinB, "leftEncoder")
         self.rightEncoder = Encoder(encoderRightPinA, encoderRightPinB, "rightEncoder")
+        
+        self.leftEncoderReset = Queue()
+        self.rightEncoderReset = Queue()
+
         self.start()
 
     def start(self):
         encoderProcessLeft = Process(name="leftEncoder",
                                      target=self.leftEncoder.readRotors,
-                                     args=(self.encoderCountLeft, ))
+                                     args=(self.encoderCountLeft, leftEncoderReset, ))
         encoderProcessRight = Process(name="rightEncoder",
                                       target=self.rightEncoder.readRotors,
-                                      args=(self.encoderCountRight, ))
+                                      args=(self.encoderCountRight, rightEncoderReset, ))
 
         encoderProcessRight.start()
         encoderProcessLeft.start()
 
     def reset(self):
-        self.leftEncoder.reset()
-        self.rightEncoder.reset()
+        self.leftEncoderReset.put(True)
+        self.leftEncoderReset.put(True)
         
     def rightValue(self):
         return self.encoderCountRight.value

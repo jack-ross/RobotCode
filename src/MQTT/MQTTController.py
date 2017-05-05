@@ -41,7 +41,7 @@ class MQTTClient(object):
         self.mqttc = mqtt.Client(self.robot_name)
         ##Want to confirm this?
         self.mqttc.connect("192.168.1.3", 1883, 60)
-        self.mqttc.onconnect = self.on_connect
+        self.mqttc.on_connect = self.on_connect
         self.mqttc.on_message = self.on_message
     
     def run_Mqtt(self):

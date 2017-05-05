@@ -122,7 +122,7 @@ def move():
         else: #go straight
             motors.setSpeeds(standard_speed, standard_speed)
 
-        totalTicks = encoders.leftValue
+        totalTicks = encoders.leftValue()
 
 def turn(degrees):
     logging.debug("Ticks to turn: " + str(degrees))
@@ -133,8 +133,8 @@ def turn(degrees):
 
     #maybe delay?
     #sleep(0.05)
-    ticksToTurnLeft = abs(degrees) * TICKS_PER_DEG_TURN + encoders.leftValue
-    ticksToTurnRight = abs(degrees) * TICKS_PER_DEG_TURN + encoders.rightValue
+    ticksToTurnLeft = abs(degrees) * TICKS_PER_DEG_TURN + encoders.leftValue()
+    ticksToTurnRight = abs(degrees) * TICKS_PER_DEG_TURN + encoders.rightValue()
 
     if(degrees > 0):
         motors.setSpeeds(standard_speed, -1*standard_speed)
@@ -145,10 +145,10 @@ def turn(degrees):
     rightDone = False
 
     while leftDone == False or rightDone == False:
-        if encoders.leftValue >= ticksToTurnLeft:
+        if encoders.leftValue() >= ticksToTurnLeft:
             motors.motor1.setSpeed(0)
             leftDone = True
-        if encoders.rightValue >= ticksToTurnRight:
+        if encoders.rightValue() >= ticksToTurnRight:
             motors.motor2.setSpeed(0)
             rightDone = True
 

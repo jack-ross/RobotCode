@@ -32,14 +32,14 @@ class Encoder(object):
         count.value = count.value +1
 
     ''' 
-    DEPRECATED
-    
+    DEPRECATED?
+    '''
     # count dict will hold the count for the encoder
-    def readRotors(self, count):
+    def readRotors(self, reset, count):
         try:
             while True:
                 encLA_last = -1
-                while self.reset == False:
+                while reset.empty():
                     encLA_state = GPIO.input(self.encoderA)
                     # test and uncomment this
                     # encLB_state = GPIO.input(dt)

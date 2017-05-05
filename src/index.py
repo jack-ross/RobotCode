@@ -69,7 +69,7 @@ def init_Robot():
 def readLeftEncoder(resetQ, count):
     logging.debug('Starting Left Encoder Process')
     #Update the encoder dictionary constantly
-    global reset 
+    '''global reset 
 
     while True:
         encLA_last = -1
@@ -92,8 +92,9 @@ def readLeftEncoder(resetQ, count):
         #remove the reset val from the queue
         reset.get()
         encoderCountLeft.value = 0
-
-    #leftEncoder.readRotors(reset, encoderCountLeft)
+    '''
+    #This actually might work?
+    leftEncoder.readRotors(resetQ, count)
     # logging.debug(encoderCountLeft)
 
 #This is the old version

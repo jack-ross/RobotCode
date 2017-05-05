@@ -47,7 +47,7 @@ def test(q, count):
 count = Value('i', 0)
 q = Queue()
 
-p = Process(target=test, args=(q,count,))
+p = Process(name="", target=test, args=(q,count,))
 p.start()
     
 

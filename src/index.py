@@ -112,12 +112,12 @@ def move():
             motors.setSpeeds(0,0)
         
         # adjust speed of one side if robot is getting off track
-        extra_ticks = abs(1.2*mqttClient.angleToGoal) * TICKS_PER_DEG_TURN; 
+        extra_ticks = abs(1.2*angleToGoal) * TICKS_PER_DEG_TURN; 
         turn_velocity = (extra_ticks + SPEED_TICKS) / SPEED_TICKS * standard_speed
 
-        if(mqttClient.angleToGoal > 0.5): #Steer left
+        if(angleToGoal > 0.5): #Steer left
             motors.setSpeeds(standard_speed, turn_velocity)
-        elif(mqttClient.angleToGoal < 0.5): #Steer right
+        elif(angleToGoal < 0.5): #Steer right
             motors.setSpeeds(turn_velocity, standard_speed)
         else: #go straight
             motors.setSpeeds(standard_speed, standard_speed)

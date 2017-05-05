@@ -101,7 +101,6 @@ def move():
     motors.setSpeeds(standard_speed, standard_speed)
 
     while (totalTicks < ticksToMove):
-        logging.debug("inside totalticks/tickstomove")
         #angle threshold
         if(abs(angleToGoal) > 30):
             logging.debug("angle greater than zero")    
@@ -116,11 +115,14 @@ def move():
         turn_velocity = (extra_ticks + SPEED_TICKS) / SPEED_TICKS * standard_speed
 
         if(angleToGoal > 0.5): #Steer left
+            logging.debug("steer left")
             motors.setSpeeds(standard_speed, turn_velocity)
         elif(angleToGoal < 0.5): #Steer right
+            logging.debug("steer right")
             motors.setSpeeds(turn_velocity, standard_speed)
         else: #go straight
-            motors.setSpeeds(standard_speed, standard_speed)
+            logging.debug("move straight")
+            motors.setSpeeds(99, 99)
 
         totalTicks = encoders.leftValue()
 

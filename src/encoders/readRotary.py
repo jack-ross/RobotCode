@@ -1,5 +1,8 @@
 #from RPi import GPIO
 import threading 
+import time
+from multiprocessing import Queue, Process, Value, Array
+
 #note these values worked for left encoder
 encoderAL = 19
 encoderBL = 13
@@ -13,7 +16,7 @@ class Encoder(object):
         self.encoderName = name
         self.encoderA = encoderAPin
         self.encoderB = encoderBPin
-        #self.lock = threading.Lock()
+        self.lock = threading.Lock()
         self.reset = False
 
     def initPins(self):
@@ -23,17 +26,16 @@ class Encoder(object):
 
         encLA_last_state = GPIO.input(self.encoderAL)
 
-    def testWhile(self):
-        while True:
-            while self.reset == False:
-                pass
+    def testWhile(self, count):
+        time.sleep(1)
+        print type(count)
+        count.value = count.value +1
 
-            self.reset = False
-            print "reset that guy"
-
-
+    ''' 
+    DEPRECATED
+    
     # count dict will hold the count for the encoder
-    def readRotors(self, countDict):
+    def readRotors(self, count):
         try:
             while True:
                 encLA_last = -1
@@ -44,16 +46,14 @@ class Encoder(object):
                     if encLA_state != encLA_last:
                         encLB_state = GPIO.input(self.encoderB)
                         if encLB_state != encLA_state:
-                            countDict[self.encoderName] += 1
+                            count.value += 1
                         else:
-                            countDict[self.encoderName] += 1
+                            count.value += 1
                             # print count["encoderA"]
                         encLA_last_state = encLA_state
                         # sleep(0.0001)
 
-                #Will this work?
-                countDict[self.encoderName] = 0
-                self.reset = False
         finally:
             GPIO.cleanup()
 
+    '''

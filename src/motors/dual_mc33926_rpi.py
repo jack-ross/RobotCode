@@ -57,7 +57,6 @@ class Motor(object):
         if speed > MAX_SPEED:
             speed = MAX_SPEED
 
-        io_init()
         GPIO.output(self.dir_pin, dir_value)
         self.pwm_pin.ChangeDutyCycle(speed)
 

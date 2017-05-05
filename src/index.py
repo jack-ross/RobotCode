@@ -37,7 +37,7 @@ sonarPin = 12
 # MQTT Variables
 distanceToGoal = 0
 angleToGoal = 0
-permissionToMove = False
+permissionToMove = True
 
 standard_speed = 50
 robot_name = "Robo 1"

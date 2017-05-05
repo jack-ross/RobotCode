@@ -22,7 +22,7 @@ class Encoder(object):
         self.encoderA = encoderAPin
         self.encoderB = encoderBPin
         self.lock = threading.Lock()
-        self.reset = False
+        self.resetEncoder = Queue()
         self.initPins()
 
     def initPins(self):
@@ -37,15 +37,18 @@ class Encoder(object):
         print type(count)
         count.value = count.value +1
 
+    def reset(self):
+        self.resetEncoder.put(True)
+
     ''' 
     DEPRECATED?
     '''
     # count dict will hold the count for the encoder
-    def readRotors(self, reset, count):
+    def readRotors(self, count):
         try:
             while True:
                 encLA_last = -1
-                while reset.empty():
+                while self.resetEncoder.empty():
                     encLA_state = GPIO.input(self.encoderA)
                     # test and uncomment this
                     # encLB_state = GPIO.input(dt)
@@ -58,34 +61,38 @@ class Encoder(object):
                             # print count["encoderA"]
                         encLA_last_state = encLA_state
                         # sleep(0.0001)
+                if not self.resetEncoder.empty():
+                    self.resetEncoder.get()
+                    count = 0
 
         finally:
-            GPIO.cleanup()
+            GPIO.cleanup() # this seems wrong...?
 
 class Encoders(object):
 
     def __init__(self):
         self.encoderCountLeft = Value('i', 0)
         self.encoderCountRight = Value('i', 0)
-        self.resetEncoders = Queue()
 
         self.leftEncoder = Encoder(encoderLeftPinA, encoderLeftPinB, "leftEncoder")
         self.rightEncoder = Encoder(encoderRightPinA, encoderRightPinB, "rightEncoder")
+        self.start()
 
     def start(self):
         encoderProcessLeft = Process(name="leftEncoder",
                                      target=self.leftEncoder.readRotors,
-                                     args=(self.reset, self.encoderCountLeft, ))
+                                     args=(self.encoderCountLeft, ))
         encoderProcessRight = Process(name="rightEncoder",
                                       target=self.rightEncoder.readRotors,
-                                      args=(self.reset, self.encoderCountRight, ))
+                                      args=(self.encoderCountRight, ))
 
         encoderProcessRight.start()
         encoderProcessLeft.start()
 
     def reset(self):
-        self.resetEncoders.put(True)
-
+        self.leftEncoder.reset()
+        self.rightEncoder.reset()
+        
     def rightValue(self):
         return self.encoderCountRight.value
     

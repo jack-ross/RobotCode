@@ -86,10 +86,10 @@ class Encoders(object):
         logging.debug("starting encoders")
         encoderProcessLeft = Process(name="leftEncoder",
                                      target=self.leftEncoder.readRotors,
-                                     args=(self.encoderCountLeft, leftEncoderReset, ))
+                                     args=(self.encoderCountLeft, self.leftEncoderReset, ))
         encoderProcessRight = Process(name="rightEncoder",
                                       target=self.rightEncoder.readRotors,
-                                      args=(self.encoderCountRight, rightEncoderReset, ))
+                                      args=(self.encoderCountRight, self.rightEncoderReset, ))
 
         encoderProcessRight.start()
         encoderProcessLeft.start()

@@ -166,10 +166,13 @@ def turn(degrees):
 if __name__ == "__main__":
 
     mqttThread.start()
+    logging.debug("after mqtt")
 
     distanceToGoal = 10
 
     try:
+        logging.debug("inside try")
+        
         while True:
             
             #if the distance to goal is > 5 cm we will wait for the next goal

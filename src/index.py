@@ -117,7 +117,7 @@ def move():
         if(angleToGoal > 0.5): #Steer left
             logging.debug("steer left")
             motors.setSpeeds(standard_speed, turn_velocity)
-        elif(angleToGoal < 0.5): #Steer right
+        elif(angleToGoal < -0.5): #Steer right
             logging.debug("steer right")
             motors.setSpeeds(turn_velocity, standard_speed)
         else: #go straight

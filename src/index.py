@@ -16,6 +16,13 @@ logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] (%(threadName)-10s) %(message)s',
                     )
 
+# CONSTANTS
+ONE_REV = 3592 # encoder ticks
+WHEEL_CIRCUM = 25.1327 # centimeters
+TI_PER_CM = ONE_REV / WHEEL_CIRCUM
+TICKS_PER_DEG_REV = ONE_REV / 360
+ROBOT_WIDTH = 22.8
+
 #Has to be a dict b/c they are mutable
 encoderCountLeft = Value('i', 0)
 encoderCountRight = Value('i', 0)
@@ -28,7 +35,7 @@ encoderLeftPinA = -1
 encoderLeftPinB = -1
 
 leftEncoder = Encoder(encoderLeftPinA, encoderLeftPinB, "leftEncoder")
-rightEncoder = Encoder(encoderRightPinA, encoderRighttPinB, "rightEncoder")
+rightEncoder = Encoder(encoderRightPinA, encoderRightPinB, "rightEncoder")
 
 
 standard_speed = 50

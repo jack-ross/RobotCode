@@ -94,6 +94,7 @@ def detectObject():
     return False
 
 def move():
+    logging.debug("moving")
     totalTicks = 0
     encoders.reset()
     ticksToMove = distanceToGoal * TI_PER_CM
@@ -165,19 +166,25 @@ def turn(degrees):
 if __name__ == "__main__":
 
     mqttThread.start()
+    logging.debug("after mqtt")
 
     distanceToGoal = 10
 
     try:
+        logging.debug("inside try")
+        
         while True:
             
             #if the distance to goal is > 5 cm we will wait for the next goal
             if(abs(angleToGoal) > 30):
+                logging.debug("turning")
                 turn(angleToGoal); 
                 #we want some time for the system to send us more data
                 #sleep(.1)
             
             elif distanceToGoal > 5:
+                logging.debug("moving1")
+                
                 move()
 
             '''

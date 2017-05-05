@@ -177,25 +177,28 @@ if __name__ == "__main__":
     try:
         while True:
             
-            #if the distance to goal is > 5 cm we will wait for the next goal
-            if(abs(angleToGoal) > 30):
-                logging.debug("turning")
-                turn(angleToGoal); 
-                #we want some time for the system to send us more data
-                #sleep(.1)
+            # #if the distance to goal is > 5 cm we will wait for the next goal
+            # if(abs(angleToGoal) > 30):
+            #     logging.debug("turning")
+            #     turn(angleToGoal); 
+            #     #we want some time for the system to send us more data
+            #     #sleep(.1)
             
-            elif distanceToGoal > 5:
-                logging.debug("moving1")
+            # elif distanceToGoal > 5:
+            #     logging.debug("moving1")
                 
-                move()
+            #     move()
 
             '''
             This is preliminary test code
             '''
             #move()
             #turn(90)
-            turn(180)
+            motors.setSpeeds(50, 50)
             time.sleep(2)
+            motors.setSpeeds(0, 0)
+            time.sleep(2)
+            
     finally:
         GPIO.cleanup()
 

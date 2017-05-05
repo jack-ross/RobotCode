@@ -32,7 +32,7 @@ encoderRightPinA = -1
 encoderRightPinB = -1
 encoderLeftPinA = -1
 encoderLeftPinB = -1
-sonarPin = -1
+sonarPin = 12
 
 # MQTT Variables
 distanceToGoal = 0

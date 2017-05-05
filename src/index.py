@@ -69,7 +69,7 @@ def init_Robot():
     init_Motors()
     init_Encoders()
     init_Sonar()
-    init_MQTT()
+    # init_MQTT()
 
 '''
 ----------------------Thread Methods----------------------------
@@ -170,6 +170,7 @@ def turn(degrees):
 
 if __name__ == "__main__":
 
+    init_Robot()
     mqttThread.start()
 
     distanceToGoal = 10

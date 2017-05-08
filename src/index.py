@@ -18,7 +18,7 @@ WHEEL_CIRCUM = 25.1327 # centimeters
 TI_PER_CM = ONE_REV / WHEEL_CIRCUM
 TICKS_PER_DEG_REV = ONE_REV / 360
 ROBOT_WIDTH = 22.8
-DEG_PER_REV = WHEEL_CIRCUM * 360 / 2 / 3.14 / ROBOT_WIDTH
+DEG_PER_REV = WHEEL_CIRCUM * 360 / 2 / 3.14159 / ROBOT_WIDTH
 TICKS_PER_DEG_TURN = ONE_REV / DEG_PER_REV
 SPEED_TICKS = 2124
 
@@ -141,6 +141,8 @@ def turn(degrees):
     ticksToTurnLeft = abs(degrees) * TICKS_PER_DEG_TURN + encoders.leftValue()
     ticksToTurnRight = abs(degrees) * TICKS_PER_DEG_TURN + encoders.rightValue()
 
+    logging.debug("Ticks to turn left " + str(ticksToTurnLeft))
+    logging.debug("Ticks to turn right " + str(ticksToTurnRight))
 
     if(degrees > 0):
         motors.setSpeeds(standard_speed, -1*standard_speed)

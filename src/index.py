@@ -123,7 +123,7 @@ def move():
             logging.debug("steer right")
             motors.setSpeeds(turn_velocity, standard_speed)
         else: #go straight
-            logging.debug("move straight")
+            # logging.debug("move straight")
             motors.setSpeeds(standard_speed, standard_speed)
 
         totalTicks = encoders.leftValue()

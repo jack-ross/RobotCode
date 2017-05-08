@@ -98,7 +98,7 @@ def move():
     totalTicks = 0
     encoders.reset()
     time.sleep(0.25)
-    
+
     ticksToMove = distanceToGoal * TI_PER_CM
     motors.setSpeeds(standard_speed, standard_speed)
 
@@ -124,7 +124,7 @@ def move():
             motors.setSpeeds(turn_velocity, standard_speed)
         else: #go straight
             logging.debug("move straight")
-            motors.setSpeeds(99, 99)
+            motors.setSpeeds(standard_speed, standard_speed)
 
         totalTicks = encoders.leftValue()
 

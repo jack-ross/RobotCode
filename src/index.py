@@ -97,6 +97,8 @@ def move():
     logging.debug("moving")
     totalTicks = 0
     encoders.reset()
+    time.sleep(0.25)
+    
     ticksToMove = distanceToGoal * TI_PER_CM
     motors.setSpeeds(standard_speed, standard_speed)
 

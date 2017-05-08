@@ -6,10 +6,8 @@ logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] (%(threadName)-10s) %(message)s',
                     )
 
-robot_name = "Robo 1"
+robot_name = "Robot 1"
 robot_topic_name = "robot-1"
-#Intialize to -1 so always reset
-lastMsgRecvTime = -1
 
 class MQTTClient(object):
     def __init__(self, robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove):
@@ -19,17 +17,18 @@ class MQTTClient(object):
         self.angleToGoal = angleToGoal
         self.permissionToMove = permissionToMove
         self.init_Mqtt()
+        self.lastMsgRecvTime = -1
+
 
     def on_connect(self, client, userdata, flags, rc):
         logging.debug("Robot 1 connected")
+        self.mqttc.subscribe(self.robot_topic_name, 0)
 
     def on_message(self, client, userdata, msg):
         logging.debug(str(msg.payload))
         parsed = json.loads(str(msg.payload))
-        x = parsed['x']
-        y = parsed['y']
         curMsgRecievedTime = parsed['time']
-        if(curMsgRecievedTime > lastMsgRecvTime):
+        if(curMsgRecievedTime > self.lastMsgRecvTime):
             logging.debug(self.robot_name + "recieved good message")
             lastMsgRecvTime = curMsgRecievedTime
             self.distanceToGoal = parsed["distanceToGoal"]
@@ -45,7 +44,6 @@ class MQTTClient(object):
         self.mqttc.on_message = self.on_message
     
     def run_Mqtt(self):
-        self.mqttc.subscribe(self.robot_topic_name, 0)
         self.mqttc.loop_forever()
         #TODO: Change this to loop(2) ? 
 

@@ -43,7 +43,7 @@ standard_speed = 50
 robot_name = "Robo 1"
 robot_topic_name = "robot-1"
 
-# mqttClient = MQTTClient(robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove)
+mqttClient = MQTTClient(robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove)
 
 
 '''
@@ -68,8 +68,8 @@ def init_Motors():
 def init_Robot():
     init_Motors()
     init_Encoders()
-    init_Sonar()
-    # init_MQTT()
+    # init_Sonar()
+    init_MQTT()
 
 '''
 ----------------------Thread Methods----------------------------
@@ -79,7 +79,7 @@ def mqttControl():
     #MQTT Polling
     mqttClient.run_Mqtt()
 
-# mqttThread = Process(name='mqttThread', target=mqttControl)
+mqttThread = Process(name='mqttThread', target=mqttControl)
 
 
 '''
@@ -171,7 +171,7 @@ def turn(degrees):
 if __name__ == "__main__":
 
     # init_Robot()
-    # mqttThread.start()
+    mqttThread.start()
     motors.enable()
     distanceToGoal = 10
 
@@ -194,12 +194,12 @@ if __name__ == "__main__":
             This is preliminary test code
             '''
             #move()
-            #turn(90)
+            turn(90)
             
-            motors.setSpeeds(50, 50)
-            time.sleep(2)
-            motors.setSpeeds(0, 0)
-            time.sleep(2)
+            #motors.setSpeeds(50, 50)
+            time.sleep(1)
+            #motors.setSpeeds(0, 0)
+            time.sleep(1)
             
     finally:
         GPIO.cleanup()

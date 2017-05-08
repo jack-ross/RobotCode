@@ -59,7 +59,8 @@ class Encoder(object):
                     # encLB_state = GPIO.input(dt)
                     if encLA_state != encLA_last:
                         count.value += 1
-                            # print count["encoderA"]
+                            # print count["encoderA"
+			logging.debug(str(self.encoderName) + "tick num: " + str(count.value))
                         encLA_last = encLA_state
                 if not resetQ.empty():
                     logging.debug("reseting")
@@ -97,7 +98,7 @@ class Encoders(object):
 
     def reset(self):
         self.leftEncoderReset.put(True)
-        self.leftEncoderReset.put(True)
+        self.rightEncoderReset.put(True)
         
     def rightValue(self):
         return self.encoderCountRight.value

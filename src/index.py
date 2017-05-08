@@ -43,7 +43,7 @@ standard_speed = 50
 robot_name = "Robo 1"
 robot_topic_name = "robot-1"
 
-mqttClient = MQTTClient(robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove)
+# mqttClient = MQTTClient(robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove)
 
 
 '''
@@ -79,7 +79,7 @@ def mqttControl():
     #MQTT Polling
     mqttClient.run_Mqtt()
 
-mqttThread = Process(name='mqttThread', target=mqttControl)
+# mqttThread = Process(name='mqttThread', target=mqttControl)
 
 
 '''

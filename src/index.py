@@ -138,8 +138,8 @@ def turn(degrees):
 
     #maybe delay?
     time.sleep(0.25)
-    ticksToTurnLeft = abs(degrees) * TICKS_PER_DEG_TURN + encoders.leftValue()
-    ticksToTurnRight = abs(degrees) * TICKS_PER_DEG_TURN + encoders.rightValue()
+    ticksToTurnLeft = abs(degrees) * TICKS_PER_DEG_TURN + encoders.leftValue() - 100
+    ticksToTurnRight = abs(degrees) * TICKS_PER_DEG_TURN + encoders.rightValue() - 100
 
     logging.debug("Ticks to turn left " + str(ticksToTurnLeft))
     logging.debug("Ticks to turn right " + str(ticksToTurnRight))
@@ -180,7 +180,7 @@ if __name__ == "__main__":
     mqttThread.start()
     motors.enable()
     distanceToGoal = 10
-    motors.setSpeeds(0, 0)
+    # motors.setSpeeds(0, 0)
     
     try:
         while True:
@@ -204,9 +204,14 @@ if __name__ == "__main__":
             turn(90)
             
             #motors.setSpeeds(50, 50)
-            time.sleep(1)
+            time.sleep(2)
+            turn(180)
             #motors.setSpeeds(0, 0)
-            time.sleep(1)
+            time.sleep(2)
+            turn(270)
+            time.sleep(2)
+            turn(360)
+            time.sleep(2)
             
     finally:
         GPIO.cleanup()

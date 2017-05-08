@@ -18,6 +18,8 @@ def io_init():
     # PWM pins
     GPIO.setup(18, GPIO.OUT)
     GPIO.setup(21, GPIO.OUT)
+    GPIO.output(18, GPIO.LOW) # M2D1
+    GPIO.output(21, GPIO.LOW) # M2D1
 
     # direction and enables
     GPIO.setup(20, GPIO.OUT)
@@ -43,7 +45,7 @@ class Motor(object):
     def __init__(self, pwm_pin, dir_pin):
         self.dir_pin = dir_pin
         self.pwm_pin = GPIO.PWM(pwm_pin, 500)  # frequency=20kHz
-        self.pwm_pin.start(75)
+        self.pwm_pin.start(100)
 
     # speed between -100 and 100
     def setSpeed(self, speed):

@@ -60,7 +60,7 @@ class Encoder(object):
                     if encLA_state != encLA_last:
                         count.value += 1
                             # print count["encoderA"
-			logging.debug(str(self.encoderName) + "tick num: " + str(count.value))
+			# logging.debug(str(self.encoderName) + "tick num: " + str(count.value))
                         encLA_last = encLA_state
                 if not resetQ.empty():
                     logging.debug("reseting")

@@ -170,9 +170,9 @@ def turn(degrees):
 
 if __name__ == "__main__":
 
-    init_Robot()
-    mqttThread.start()
-
+    # init_Robot()
+    # mqttThread.start()
+    motors.enable()
     distanceToGoal = 10
 
     try:
@@ -195,6 +195,7 @@ if __name__ == "__main__":
             '''
             #move()
             #turn(90)
+            
             motors.setSpeeds(50, 50)
             time.sleep(2)
             motors.setSpeeds(0, 0)

@@ -17,15 +17,15 @@ count = 0
 
 # TODO: Get proper pins
 encoderRightPinA = 4
-encoderRightPinB = 17
+encoderRightPinB = 17 # not used
 encoderLeftPinA = 19
-encoderLeftPinB = 13
+encoderLeftPinB = 13 # not used
 
 class Encoder(object):
     def __init__(self, encoderAPin, encoderBPin, name):
         self.encoderName = name
         self.encoderA = encoderAPin
-        self.encoderB = encoderBPin
+        self.encoderB = encoderBPin # not used
         self.lock = threading.Lock()
         self.resetEncoder = Queue()
         self.initPins()

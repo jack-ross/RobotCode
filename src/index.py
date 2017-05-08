@@ -133,10 +133,14 @@ def turn(degrees):
     #reset the encoder counters
     encoders.reset()
 
+    logging.debug("encoder val left " + str(encoders.leftValue()))
+    logging.debug("encoder val right " + str(encoders.rightValue()))
+
     #maybe delay?
-    #sleep(0.05)
+    time.sleep(0.25)
     ticksToTurnLeft = abs(degrees) * TICKS_PER_DEG_TURN + encoders.leftValue()
     ticksToTurnRight = abs(degrees) * TICKS_PER_DEG_TURN + encoders.rightValue()
+
 
     if(degrees > 0):
         motors.setSpeeds(standard_speed, -1*standard_speed)

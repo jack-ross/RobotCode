@@ -146,8 +146,8 @@ def turn(degrees):
     logging.debug("Ticks to turn left " + str(ticksToTurnLeft))
     logging.debug("Ticks to turn right " + str(ticksToTurnRight))
 
-    if(degrees > 0):
-        motors.setSpeeds(standard_speed/2, -1*standard_speed/2)
+    if(degrees < 0):
+        motors.setSpeeds(standard_speed, -1*standard_speed)
     else:
         motors.setSpeeds(-1*standard_speed/2, standard_speed/2)
 

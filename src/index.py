@@ -180,7 +180,8 @@ if __name__ == "__main__":
     mqttThread.start()
     motors.enable()
     distanceToGoal = 10
-
+    motors.setSpeeds(0, 0)
+    
     try:
         while True:
             

@@ -40,7 +40,7 @@ angleToGoal = 0
 permissionToMove = True
 
 standard_speed = 50
-robot_name = "Robo 1"
+robot_name = "Robot 1:"
 robot_topic_name = "robot-1"
 
 mqttClient = MQTTClient(robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove)
@@ -187,33 +187,32 @@ if __name__ == "__main__":
     try:
         while True:
             
-            # #if the distance to goal is > 5 cm we will wait for the next goal
-            # if(abs(angleToGoal) > 30):
-            #     logging.debug("turning")
-            #     turn(angleToGoal); 
-            #     #we want some time for the system to send us more data
-            #     #sleep(.1)
+            #if the distance to goal is > 5 cm we will wait for the next goal
+            if(abs(angleToGoal) > 30):
+                logging.debug("turning")
+                turn(angleToGoal); 
+                #we want some time for the system to send us more data
+                #sleep(.1)
             
-            # elif distanceToGoal > 5:
-            #     logging.debug("moving1")
-                
-            #     move()
+            elif distanceToGoal > 5:
+                logging.debug("moving1")
+                move()
 
             '''
             This is preliminary test code
             '''
             #move()
-            turn(90)
+            # turn(90)
             
-            #motors.setSpeeds(50, 50)
-            time.sleep(2)
-            turn(180)
-            #motors.setSpeeds(0, 0)
-            time.sleep(2)
-            turn(270)
-            time.sleep(2)
-            turn(360)
-            time.sleep(2)
+            # #motors.setSpeeds(50, 50)
+            # time.sleep(2)
+            # turn(180)
+            # #motors.setSpeeds(0, 0)
+            # time.sleep(2)
+            # turn(270)
+            # time.sleep(2)
+            # turn(360)
+            # time.sleep(2)
             
     finally:
         GPIO.cleanup()

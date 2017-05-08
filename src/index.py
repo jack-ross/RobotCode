@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG,
                     )
 
 # CONSTANTS
-ONE_REV = 3592 # encoder ticks
+ONE_REV = 3592/4 # encoder ticks
 WHEEL_CIRCUM = 25.1327 # centimeters
 TI_PER_CM = ONE_REV / WHEEL_CIRCUM
 TICKS_PER_DEG_REV = ONE_REV / 360

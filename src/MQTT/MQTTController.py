@@ -31,8 +31,8 @@ class MQTTClient(object):
         if(curMsgRecievedTime > self.lastMsgRecvTime):
             logging.debug(self.robot_name + "recieved good message")
             lastMsgRecvTime = curMsgRecievedTime
-            self.distanceToGoal = parsed["distanceToGoal"]
-            self.angleToGoal = parsed["angleToGoal"]
+            self.distanceToGoal.value = float(parsed["distanceToGoal"])
+            self.angleToGoal.value = float(parsed["angleToGoal"])
             self.permissionToMove = parsed["permissionToMove"]
 
     def init_Mqtt(self):

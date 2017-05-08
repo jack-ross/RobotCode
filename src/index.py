@@ -35,8 +35,8 @@ encoderLeftPinB = -1
 sonarPin = 12
 
 # MQTT Variables
-distanceToGoal = 0
-angleToGoal = 0
+distanceToGoal = Value('d', 0)
+angleToGoal = Value('d', 0)
 permissionToMove = True
 
 standard_speed = 50
@@ -99,12 +99,12 @@ def move():
     encoders.reset()
     time.sleep(0.25)
 
-    ticksToMove = distanceToGoal * TI_PER_CM
+    ticksToMove = distanceToGoal.value * TI_PER_CM
     motors.setSpeeds(standard_speed, standard_speed)
 
     while (totalTicks < ticksToMove):
         #angle threshold
-        if(abs(angleToGoal) > 30):
+        if(abs(angleToGoal.value) > 30):
             logging.debug("angle greater than zero")    
             break
 
@@ -113,14 +113,14 @@ def move():
             motors.setSpeeds(0,0)
         
         # adjust speed of one side if robot is getting off track
-        extra_ticks = abs(1.2*angleToGoal) * TICKS_PER_DEG_TURN; 
-        turn_velocity = (extra_ticks + SPEED_TICKS) / SPEED_TICKS * standard_speed
-
-        if(angleToGoal > 0.5): #Steer left
-            logging.debug("steer left")
+        extra_ticks = abs(1.2*angleToGoal.value) * TICKS_PER_DEG_TURN; 
+        #turn_velocity = (extra_ticks + SPEED_TICKS) / SPEED_TICKS * standard_speed
+        turn_velocity = standard_speed + 5
+        if(angleToGoal.value > 0.5): #Steer left
+            #logging.debug("steer left")
             motors.setSpeeds(standard_speed, turn_velocity)
-        elif(angleToGoal < -0.5): #Steer right
-            logging.debug("steer right")
+        elif(angleToGoal.value < -0.5): #Steer right
+            #logging.debug("steer right")
             motors.setSpeeds(turn_velocity, standard_speed)
         else: #go straight
             # logging.debug("move straight")
@@ -147,9 +147,9 @@ def turn(degrees):
     logging.debug("Ticks to turn right " + str(ticksToTurnRight))
 
     if(degrees > 0):
-        motors.setSpeeds(standard_speed, -1*standard_speed)
+        motors.setSpeeds(standard_speed/2, -1*standard_speed/2)
     else:
-        motors.setSpeeds(-1*standard_speed, standard_speed)
+        motors.setSpeeds(-1*standard_speed/2, standard_speed/2)
 
     leftDone = False
     rightDone = False
@@ -161,6 +161,8 @@ def turn(degrees):
         if encoders.rightValue() >= ticksToTurnRight:
             motors.motor2.setSpeed(0)
             rightDone = True
+
+
 
 '''
 --------------------------Main----------------------------
@@ -181,20 +183,22 @@ if __name__ == "__main__":
     # init_Robot()
     mqttThread.start()
     motors.enable()
-    distanceToGoal = 10
+    # distanceToGoal = 10
     # motors.setSpeeds(0, 0)
     
     try:
         while True:
-            
+            # print "angle to goal " + str(angleToGoal.value)
+            # print "distance to goal " + str(distanceToGoal.value)
             #if the distance to goal is > 5 cm we will wait for the next goal
-            if(abs(angleToGoal) > 30):
+            if(abs(angleToGoal.value) > 30):
                 logging.debug("turning")
-                turn(angleToGoal); 
+                turn(angleToGoal.value)
+                time.sleep(2) 
                 #we want some time for the system to send us more data
                 #sleep(.1)
             
-            elif distanceToGoal > 5:
+            elif distanceToGoal.value > 5:
                 logging.debug("moving1")
                 move()
 

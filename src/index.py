@@ -43,7 +43,7 @@ standard_speed = 50
 robot_name = "Robot 1:"
 robot_topic_name = "robot-1"
 
-#mqttClient = MQTTClient(robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove)
+mqttClient = MQTTClient(robot_name, robot_topic_name, distanceToGoal, angleToGoal, permissionToMove)
 
 
 '''
@@ -181,10 +181,11 @@ def turn(degrees):
 if __name__ == "__main__":
 
     # init_Robot()
-    #mqttThread.start()
+    mqttThread.start()
     motors.enable()
     # distanceToGoal = 10
     # motors.setSpeeds(0, 0)
+    '''
     alleyLength = 100 #cm
     alleyWidth = 50 #cm
     numAlleys = 3
@@ -197,7 +198,7 @@ if __name__ == "__main__":
         move()
         turn(90)
         #ready for next alley
-
+    '''
 
     try:
         while True:
